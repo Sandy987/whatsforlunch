@@ -4,10 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Sandy987/whatsforlunch/alive"
-	"github.com/Sandy987/whatsforlunch/domain"
-	"github.com/Sandy987/whatsforlunch/routing"
-	"github.com/Sandy987/whatsforlunch/user"
 	"github.com/gorilla/mux"
 )
 
@@ -20,15 +16,15 @@ type App struct {
 // Initialize sets up all app state and contexts
 func (a *App) Initialize() {
 	// TODO: Don't append routes like this?
-	allRoutes := append(alive.Routes, user.Routes...)
+	allRoutes := GetAllRoutes()
 
-	a.Router = routing.NewRouter(allRoutes)
+	a.Router = NewRouter(allRoutes)
 }
 
 // StartAPI starts the app on a particular address
 func (a *App) StartAPI(addr string) {
-	db := domain.InitDb()
-	err := domain.MigrateToLatest()
+	db := InitDb()
+	err := MigrateToLatest()
 	if err != nil {
 		log.Fatal(err)
 	}

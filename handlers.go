@@ -1,4 +1,4 @@
-package user
+package main
 
 import (
 	"encoding/json"
@@ -11,7 +11,6 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/Sandy987/whatsforlunch/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -20,16 +19,16 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, converr := strconv.Atoi(vars["userId"])
 	if converr != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid ID")
+		RespondWithError(w, http.StatusBadRequest, "Invalid ID")
 		return
 	}
 	user, err := GetUser(id)
 	if err != nil {
-		utils.RespondWithError(w, http.StatusInternalServerError, "Unable to retrieve User")
+		RespondWithError(w, http.StatusInternalServerError, "Unable to retrieve User")
 		return
 	}
 
-	utils.RespondWithJSON(w, http.StatusOK, user)
+	RespondWithJSON(w, http.StatusOK, user)
 }
 
 // Signup creates a new user with a given password
@@ -37,16 +36,16 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	var signup SignupRequest
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
+		RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
 		return
 	}
 	if err := r.Body.Close(); err != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
+		RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
 		return
 	}
 
 	if err := json.Unmarshal(body, &signup); err != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
+		RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
 		return
 	}
 
@@ -59,14 +58,14 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(signup.Password), bcrypt.DefaultCost)
 	if err != nil {
-		utils.RespondWithError(w, http.StatusInternalServerError, "Unable to signup")
+		RespondWithError(w, http.StatusInternalServerError, "Unable to signup")
 		return
 	}
 
 	user.PasswordHash = base64.StdEncoding.EncodeToString(hash)
 
 	CreateUser(&user)
-	utils.RespondWithJSON(w, http.StatusCreated, nil)
+	RespondWithJSON(w, http.StatusCreated, nil)
 }
 
 // Update accepts a JSON object and updates the matching User
@@ -74,19 +73,19 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	var user User
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
+		RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
 		return
 	}
 	if err := r.Body.Close(); err != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
+		RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
 		return
 	}
 
 	if err := json.Unmarshal(body, &user); err != nil {
-		utils.RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
+		RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
 		return
 	}
 
 	UpdateUser(&user)
-	utils.RespondWithJSON(w, http.StatusCreated, nil)
+	RespondWithJSON(w, http.StatusCreated, nil)
 }
