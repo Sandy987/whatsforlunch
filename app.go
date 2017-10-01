@@ -7,6 +7,7 @@ import (
 	"github.com/Sandy987/whatsforlunch/alive"
 	"github.com/Sandy987/whatsforlunch/domain"
 	"github.com/Sandy987/whatsforlunch/routing"
+	"github.com/Sandy987/whatsforlunch/user"
 	"github.com/gorilla/mux"
 )
 
@@ -18,7 +19,10 @@ type App struct {
 
 // Initialize sets up all app state and contexts
 func (a *App) Initialize() {
-	a.Router = routing.NewRouter(alive.Routes) // TODO: Make sure concatenate route slices
+	// TODO: Don't append routes like this?
+	allRoutes := append(alive.Routes, user.Routes...)
+
+	a.Router = routing.NewRouter(allRoutes)
 }
 
 // StartAPI starts the app on a particular address
