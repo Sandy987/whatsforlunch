@@ -1,4 +1,4 @@
-package user
+package main
 
 // User contains information about a user
 type User struct {

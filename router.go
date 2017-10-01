@@ -1,4 +1,4 @@
-package routing
+package main
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ type Route struct {
 }
 
 // Routes contains a slice of Route
-type Routes []Route
+type Routes []*Route
 
 // NewRouter returns a new, logged HTTP router that acts over the given routes
 func NewRouter(routes Routes) *mux.Router {

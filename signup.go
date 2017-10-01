@@ -1,4 +1,4 @@
-package user
+package main
 
 // SignupRequest is a model used to create new users
 type SignupRequest struct {
