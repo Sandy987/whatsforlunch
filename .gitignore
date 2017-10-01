@@ -15,3 +15,12 @@
 
 # Named binary
 whatsforlunch
+
+# IDE specific files
+.vscode/
+
+# Debugger artifacts
+debug
+
+# Environment variables
+.env
