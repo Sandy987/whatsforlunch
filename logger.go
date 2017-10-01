@@ -1,9 +1,10 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"time"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 // Logger wraps an HTTP handler and logs all web requests
@@ -13,12 +14,9 @@ func Logger(inner http.Handler, name string) http.Handler {
 
 		inner.ServeHTTP(w, r)
 
-		log.Printf(
-			"%s\t%s\t%s\t%s",
-			r.Method,
-			r.RequestURI,
-			name,
-			time.Since(start),
-		)
+		log.WithField("method", r.Method).
+			WithField("url", r.RequestURI).
+			WithField("duration", time.Since(start)).
+			Info()
 	})
 }
