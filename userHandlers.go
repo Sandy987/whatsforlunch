@@ -14,15 +14,21 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// UserHandlers contains http handlers for users
+type UserHandlers struct{}
+
+// UserHandles is a global instance of these handlers?
+var UserHandles = UserHandlers{}
+
 // Show shows the details of a particular User
-func Show(w http.ResponseWriter, r *http.Request) {
+func (u *UserHandlers) Show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, converr := strconv.Atoi(vars["userId"])
 	if converr != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid ID")
 		return
 	}
-	user, err := GetUser(id)
+	user, err := UserRepo.GetUser(id)
 	if err != nil {
 		RespondWithError(w, http.StatusInternalServerError, "Unable to retrieve User")
 		return
@@ -31,9 +37,18 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	RespondWithJSON(w, http.StatusOK, user)
 }
 
+// SignupRequestModel is a model used to create new users
+type SignupRequestModel struct {
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
 // Signup creates a new user with a given password
-func Signup(w http.ResponseWriter, r *http.Request) {
-	var signup SignupRequest
+func (u *UserHandlers) Signup(w http.ResponseWriter, r *http.Request) {
+	var signup SignupRequestModel
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
@@ -64,12 +79,12 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 	user.PasswordHash = base64.StdEncoding.EncodeToString(hash)
 
-	CreateUser(&user)
+	UserRepo.CreateUser(&user)
 	RespondWithJSON(w, http.StatusCreated, nil)
 }
 
 // Update accepts a JSON object and updates the matching User
-func Update(w http.ResponseWriter, r *http.Request) {
+func (u *UserHandlers) Update(w http.ResponseWriter, r *http.Request) {
 	var user User
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
@@ -86,6 +101,6 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	UpdateUser(&user)
+	UserRepo.UpdateUser(&user)
 	RespondWithJSON(w, http.StatusCreated, nil)
 }

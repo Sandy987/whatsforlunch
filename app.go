@@ -25,7 +25,7 @@ func (a *App) Initialize() {
 func (a *App) StartAPI(addr string) {
 	db := InitDb()
 	err := MigrateToLatest()
-	if err != nil && err.Error != "no change" {
+	if err != nil && err.Error() != "no change" {
 		log.Fatal(err)
 	}
 	defer db.Close()

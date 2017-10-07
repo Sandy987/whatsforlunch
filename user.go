@@ -9,9 +9,6 @@ type User struct {
 	Email     string `json:"email"`
 }
 
-// Users contains a collection of User items
-type Users []User
-
 // HashedUser should only be used internally as it contains the hash
 type HashedUser struct {
 	ID           int    `json:"id"`
