@@ -14,18 +14,18 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// UserHandlers contains http handlers for users
-type UserHandlers struct {
+// UserHandler contains http handlers for users
+type UserHandler struct {
 	userRepo *UserRepository
 }
 
 // NewUserHandlers gets a new instance of user handlers
-func NewUserHandlers() *UserHandlers {
-	return &UserHandlers{userRepo: NewUserRepo()}
+func NewUserHandlers() *UserHandler {
+	return &UserHandler{userRepo: NewUserRepo()}
 }
 
 // show shows the details of a particular User
-func (u *UserHandlers) show(w http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, converr := strconv.Atoi(vars["userId"])
 	if converr != nil {
@@ -51,7 +51,7 @@ type SignupRequestModel struct {
 }
 
 // signup creates a new user with a given password
-func (u *UserHandlers) signup(w http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) signup(w http.ResponseWriter, r *http.Request) {
 	var signup SignupRequestModel
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
@@ -88,7 +88,7 @@ func (u *UserHandlers) signup(w http.ResponseWriter, r *http.Request) {
 }
 
 // update accepts a JSON object and updates the matching User
-func (u *UserHandlers) update(w http.ResponseWriter, r *http.Request) {
+func (u *UserHandler) update(w http.ResponseWriter, r *http.Request) {
 	var user User
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {

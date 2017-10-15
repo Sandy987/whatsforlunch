@@ -13,7 +13,7 @@ func NewUserRepo() *UserRepository {
 func (r *UserRepository) getAllUsers() ([]*User, error) {
 	users := []*User{}
 
-	err := DB.Select(&users, "SELECT * from \"user\"")
+	err := DB.Select(&users, `SELECT * from "user";`)
 	return users, err
 }
 
@@ -21,13 +21,13 @@ func (r *UserRepository) getAllUsers() ([]*User, error) {
 func (r *UserRepository) getUser(id int) (*User, error) {
 	user := User{}
 
-	err := DB.Get(&user, "SELECT * from \"user\" WHERE ID = $1", id)
+	err := DB.Get(&user, `SELECT * from "user" WHERE ID = $1;`, id)
 	return &user, err
 }
 
 // createUser create a User object in the repository
 func (r *UserRepository) createUser(u *HashedUser) {
-	DB.NamedExec(`INSERT INTO \"user\" 
+	DB.NamedExec(`INSERT INTO "user" 
 		(
 			username,
 			first_name,
@@ -42,14 +42,14 @@ func (r *UserRepository) createUser(u *HashedUser) {
 			:last_name,
 			:email,
 			:password_hash,
-		)
+		);
 	`, u)
 }
 
 // updateUser updates an existing User
 func (r *UserRepository) updateUser(u *User) {
-	DB.NamedExec(`UPDATE \"user\" SET
+	DB.NamedExec(`UPDATE "user" SET
 		first_name = :first_name,
 		last_name = :last_name,
-	WHERE ID = :id`, u)
+	WHERE ID = :id;`, u)
 }
