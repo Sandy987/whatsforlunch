@@ -15,20 +15,24 @@ import (
 )
 
 // UserHandlers contains http handlers for users
-type UserHandlers struct{}
+type UserHandlers struct {
+	userRepo *UserRepository
+}
 
-// UserHandles is a global instance of these handlers?
-var UserHandles = UserHandlers{}
+// NewUserHandlers gets a new instance of user handlers
+func NewUserHandlers() *UserHandlers {
+	return &UserHandlers{userRepo: NewUserRepo()}
+}
 
-// Show shows the details of a particular User
-func (u *UserHandlers) Show(w http.ResponseWriter, r *http.Request) {
+// show shows the details of a particular User
+func (u *UserHandlers) show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, converr := strconv.Atoi(vars["userId"])
 	if converr != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid ID")
 		return
 	}
-	user, err := UserRepo.GetUser(id)
+	user, err := u.userRepo.getUser(id)
 	if err != nil {
 		RespondWithError(w, http.StatusInternalServerError, "Unable to retrieve User")
 		return
@@ -46,8 +50,8 @@ type SignupRequestModel struct {
 	LastName  string `json:"lastName"`
 }
 
-// Signup creates a new user with a given password
-func (u *UserHandlers) Signup(w http.ResponseWriter, r *http.Request) {
+// signup creates a new user with a given password
+func (u *UserHandlers) signup(w http.ResponseWriter, r *http.Request) {
 	var signup SignupRequestModel
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
@@ -79,12 +83,12 @@ func (u *UserHandlers) Signup(w http.ResponseWriter, r *http.Request) {
 
 	user.PasswordHash = base64.StdEncoding.EncodeToString(hash)
 
-	UserRepo.CreateUser(&user)
+	u.userRepo.createUser(&user)
 	RespondWithJSON(w, http.StatusCreated, nil)
 }
 
-// Update accepts a JSON object and updates the matching User
-func (u *UserHandlers) Update(w http.ResponseWriter, r *http.Request) {
+// update accepts a JSON object and updates the matching User
+func (u *UserHandlers) update(w http.ResponseWriter, r *http.Request) {
 	var user User
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	if err != nil {
@@ -101,6 +105,6 @@ func (u *UserHandlers) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	UserRepo.UpdateUser(&user)
+	u.userRepo.updateUser(&user)
 	RespondWithJSON(w, http.StatusCreated, nil)
 }
