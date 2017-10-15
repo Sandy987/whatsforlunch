@@ -6,5 +6,5 @@ CREATE TABLE "location" (
 CREATE TABLE "dish" (
     ID serial PRIMARY KEY,
     name text NOT NULL,
-    location_id integer REFERENCES "location" (ID)
+    location_id integer NOT NULL REFERENCES "location" (ID)
 )
