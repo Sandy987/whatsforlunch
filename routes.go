@@ -9,9 +9,10 @@ func alive(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Welcome to whatsforlunch!")
 }
 
-// TODO: Do this better?
 var locationHandlers = NewLocationHandlers()
 var dishHandlers = NewDishHandlers()
+var reviewHandlers = NewReviewHandlers()
+var userHandlers = NewUserHandlers()
 
 // GetAllRoutes contains all routes
 func GetAllRoutes() []*Route {
@@ -47,6 +48,30 @@ func GetAllRoutes() []*Route {
 			HandlerFunc: locationHandlers.update,
 		},
 		&Route{
+			Name:        "ReviewsList",
+			Method:      "GET",
+			Pattern:     "review",
+			HandlerFunc: reviewHandlers.list,
+		},
+		&Route{
+			Name:        "ReviewsShow",
+			Method:      "GET",
+			Pattern:     "review/{reviewId}",
+			HandlerFunc: reviewHandlers.show,
+		},
+		&Route{
+			Name:        "ReviewsCreate",
+			Method:      "POST",
+			Pattern:     "review",
+			HandlerFunc: reviewHandlers.create,
+		},
+		&Route{
+			Name:        "ReviewsPut",
+			Method:      "PUT",
+			Pattern:     "review",
+			HandlerFunc: reviewHandlers.update,
+		},
+		&Route{
 			Name:        "DishesList",
 			Method:      "GET",
 			Pattern:     "dish",
@@ -69,6 +94,24 @@ func GetAllRoutes() []*Route {
 			Method:      "PUT",
 			Pattern:     "dish",
 			HandlerFunc: dishHandlers.update,
+		},
+		&Route{
+			Name:        "UsersShow",
+			Method:      "GET",
+			Pattern:     "user/{userId}",
+			HandlerFunc: userHandlers.show,
+		},
+		&Route{
+			Name:        "UsersSignup",
+			Method:      "POST",
+			Pattern:     "user",
+			HandlerFunc: userHandlers.signup,
+		},
+		&Route{
+			Name:        "UsersPut",
+			Method:      "PUT",
+			Pattern:     "user",
+			HandlerFunc: userHandlers.update,
 		},
 	}
 }

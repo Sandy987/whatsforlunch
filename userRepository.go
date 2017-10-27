@@ -21,7 +21,13 @@ func (r *UserRepository) getAllUsers() ([]*User, error) {
 func (r *UserRepository) getUser(id int) (*User, error) {
 	user := User{}
 
-	err := DB.Get(&user, `SELECT * from "user" WHERE ID = $1;`, id)
+	err := DB.Get(&user, `SELECT
+		id,
+		username,
+		first_name,
+		last_name,
+		email
+		from "user" WHERE ID = $1;`, id)
 	return &user, err
 }
 
@@ -33,7 +39,7 @@ func (r *UserRepository) createUser(u *HashedUser) {
 			first_name,
 			last_name,
 			email,
-			password_hash,
+			password_hash
 		)
 		values
 		(
@@ -41,7 +47,7 @@ func (r *UserRepository) createUser(u *HashedUser) {
 			:first_name,
 			:last_name,
 			:email,
-			:password_hash,
+			:password_hash
 		);
 	`, u)
 }
@@ -50,6 +56,6 @@ func (r *UserRepository) createUser(u *HashedUser) {
 func (r *UserRepository) updateUser(u *User) {
 	DB.NamedExec(`UPDATE "user" SET
 		first_name = :first_name,
-		last_name = :last_name,
+		last_name = :last_name
 	WHERE ID = :id;`, u)
 }
