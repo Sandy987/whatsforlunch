@@ -5,9 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"io"
-	"io/ioutil"
-
 	"github.com/gorilla/mux"
 )
 
@@ -49,17 +46,8 @@ func (h *LocationHandler) show(w http.ResponseWriter, r *http.Request) {
 
 func (h *LocationHandler) create(w http.ResponseWriter, r *http.Request) {
 	var location Location
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid Location Data")
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid Location Data")
-		return
-	}
-
-	if err := json.Unmarshal(body, &location); err != nil {
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&location); err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid Location Data")
 		return
 	}
@@ -71,18 +59,9 @@ func (h *LocationHandler) create(w http.ResponseWriter, r *http.Request) {
 // update accepts a JSON object and updates the matching location
 func (h *LocationHandler) update(w http.ResponseWriter, r *http.Request) {
 	var location Location
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid location Data")
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid location Data")
-		return
-	}
-
-	if err := json.Unmarshal(body, &location); err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid location Data")
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&location); err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid Location Data")
 		return
 	}
 

@@ -6,8 +6,6 @@ import (
 	"strconv"
 
 	"encoding/base64"
-	"io"
-	"io/ioutil"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -53,17 +51,8 @@ type SignupRequestModel struct {
 // signup creates a new user with a given password
 func (u *UserHandler) signup(w http.ResponseWriter, r *http.Request) {
 	var signup SignupRequestModel
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
-		return
-	}
-
-	if err := json.Unmarshal(body, &signup); err != nil {
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&signup); err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid Signup Data")
 		return
 	}
@@ -90,17 +79,8 @@ func (u *UserHandler) signup(w http.ResponseWriter, r *http.Request) {
 // update accepts a JSON object and updates the matching User
 func (u *UserHandler) update(w http.ResponseWriter, r *http.Request) {
 	var user User
-	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-	if err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
-		return
-	}
-	if err := r.Body.Close(); err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
-		return
-	}
-
-	if err := json.Unmarshal(body, &user); err != nil {
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&user); err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid User Data")
 		return
 	}
