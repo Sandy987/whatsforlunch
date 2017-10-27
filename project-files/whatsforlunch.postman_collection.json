@@ -1,0 +1,398 @@
+{
+	"info": {
+		"name": "whatsforlunch",
+		"_postman_id": "88182957-2d6a-4e11-5b90-a3cc9610ca44",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Alive Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/alive",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"alive"
+					]
+				},
+				"description": "Checks if whatsforlunch is alive."
+			},
+			"response": []
+		},
+		{
+			"name": "Location - List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/location",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"location"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Location - Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/location/10",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"location",
+						"10"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Location - Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"Kriti's Disgusting Bistro\"\n\t}\n]"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/location",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"location"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Location - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 10,\n\t\"name\": \"Kriti's Awesome Bistro\"\n}"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/location",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"location"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Dish - List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/dish",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"dish"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Dish - Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/dish/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"dish",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Dish - Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"Pani Puri\",\n\t\t\"locationId\": 10\n\t}\n]"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/dish",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"dish"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Dish - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 1,\n\t\"name\": \"Cheesecake\",\n\t\"locationId\": 10\n}"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/dish",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"dish"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Review - List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/review",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"review"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Review - Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/review/1",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"review",
+						"1"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Review - Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"userId\": 1,\n\t\t\"dishId\": 1,\n\t\t\"title\": \"My Test Review\",\n\t\t\"rating\": 5,\n\t\t\"body\": \"This is a pretty cool review\"\n\t}\n]"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/review",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"review"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Review - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 1,\n\t\"userId\": 1,\n\t\"dishId\": 1,\n\t\"title\": \"My Test Review\",\n\t\"rating\": 5,\n\t\"body\": \"This is a pretty cool review\"\n}"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/review",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"review"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User - Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{apiUrl}}/api/user/2",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"2"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User - Signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"Test\",\n\t\"lastName\": \"Test\",\n\t\"email\": \"test@test.com\",\n\t\"username\": \"testusername\",\n\t\"password\": \"hello\"\n}"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/user",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 2,\n\t\"firstName\": \"First\",\n\t\"lastName\": \"Last\"\n}"
+				},
+				"url": {
+					"raw": "{{apiUrl}}/api/user",
+					"host": [
+						"{{apiUrl}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

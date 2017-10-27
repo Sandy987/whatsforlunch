@@ -8,12 +8,12 @@ The `WHATSFORLUNCH_ENV` variable can have the following values: `dev`, `staging`
 ## dependencies
 
 - go 1.8 +
-- [govendor](https://github.com/kardianos/govendor)
+- [dep](https://github.com/golang/dep)
 - docker
 
 ## get going
 
-`govendor sync`
+`dep ensure`
 
 `go build`
 
