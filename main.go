@@ -15,7 +15,6 @@ func main() {
 	if port == "" {
 		port = ":3000"
 	}
-
 	log.Printf("Starting API on %s\n", port)
 	app.StartAPI(port)
 }

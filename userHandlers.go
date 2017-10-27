@@ -1,11 +1,10 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"strconv"
-
-	"encoding/base64"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -37,6 +36,16 @@ func (u *UserHandler) show(w http.ResponseWriter, r *http.Request) {
 	}
 
 	RespondWithJSON(w, http.StatusOK, user)
+}
+
+// LoginRequestModel is a model used to login
+type LoginRequestModel struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+func (u *UserHandler) login(w http.ResponseWriter, r *http.Request) {
+
 }
 
 // SignupRequestModel is a model used to create new users
