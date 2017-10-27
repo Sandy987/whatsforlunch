@@ -32,8 +32,8 @@ func (r *UserRepository) getUser(id int) (*User, error) {
 }
 
 // createUser create a User object in the repository
-func (r *UserRepository) createUser(u *HashedUser) {
-	DB.NamedExec(`INSERT INTO "user" 
+func (r *UserRepository) createUser(u *HashedUser) error {
+	_, err := DB.NamedExec(`INSERT INTO "user" 
 		(
 			username,
 			first_name,
@@ -50,12 +50,14 @@ func (r *UserRepository) createUser(u *HashedUser) {
 			:password_hash
 		);
 	`, u)
+	return err
 }
 
 // updateUser updates an existing User
-func (r *UserRepository) updateUser(u *User) {
-	DB.NamedExec(`UPDATE "user" SET
+func (r *UserRepository) updateUser(u *User) error {
+	_, err := DB.NamedExec(`UPDATE "user" SET
 		first_name = :first_name,
 		last_name = :last_name
 	WHERE ID = :id;`, u)
+	return err
 }

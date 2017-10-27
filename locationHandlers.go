@@ -30,8 +30,8 @@ func (h *LocationHandler) list(w http.ResponseWriter, r *http.Request) {
 // show shows the details of a particular location
 func (h *LocationHandler) show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, converr := strconv.Atoi(vars["locationId"])
-	if converr != nil {
+	id, err := strconv.Atoi(vars["locationId"])
+	if err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid ID")
 		return
 	}
@@ -53,7 +53,10 @@ func (h *LocationHandler) create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, loc := range locations {
-		h.locRepo.createLocation(&loc)
+		if err := h.locRepo.createLocation(&loc); err != nil {
+			RespondWithError(w, http.StatusInternalServerError, "Unable to create location")
+			return
+		}
 	}
 
 	RespondWithJSON(w, http.StatusCreated, len(locations))
@@ -68,6 +71,9 @@ func (h *LocationHandler) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.locRepo.updateLocation(&location)
+	if err := h.locRepo.updateLocation(&location); err != nil {
+		RespondWithError(w, http.StatusInternalServerError, "Unable to update location")
+		return
+	}
 	RespondWithJSON(w, http.StatusCreated, nil)
 }

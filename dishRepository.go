@@ -26,8 +26,8 @@ func (r *DishRepository) getDish(id int) (*Dish, error) {
 }
 
 // createDish create a Dish object in the repository
-func (r *DishRepository) createDish(dish *Dish) {
-	DB.NamedExec(`INSERT INTO dish
+func (r *DishRepository) createDish(dish *Dish) error {
+	_, err := DB.NamedExec(`INSERT INTO dish
 		(
 			name,
 			location_id
@@ -38,12 +38,14 @@ func (r *DishRepository) createDish(dish *Dish) {
 			:location_id
 		);
 	`, dish)
+	return err
 }
 
 // updateDish updates an existing Dish
-func (r *DishRepository) updateDish(dish *Dish) {
-	DB.NamedExec(`UPDATE dish SET
+func (r *DishRepository) updateDish(dish *Dish) error{
+	_, err := DB.NamedExec(`UPDATE dish SET
 		name = :name,
 		location_id = :location_id
 	WHERE ID = :id;`, dish)
+	return err
 }
