@@ -45,15 +45,18 @@ func (h *LocationHandler) show(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *LocationHandler) create(w http.ResponseWriter, r *http.Request) {
-	var location Location
+	var locations []Location
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&location); err != nil {
-		RespondWithError(w, http.StatusBadRequest, "Invalid Location Data")
+	if err := decoder.Decode(&locations); err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid Locations Data")
 		return
 	}
 
-	h.locRepo.createLocation(&location)
-	RespondWithJSON(w, http.StatusCreated, nil)
+	for _, loc := range locations {
+		h.locRepo.createLocation(&loc)
+	}
+
+	RespondWithJSON(w, http.StatusCreated, len(locations))
 }
 
 // update accepts a JSON object and updates the matching location
