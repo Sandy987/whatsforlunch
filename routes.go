@@ -9,8 +9,9 @@ func alive(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Welcome to whatsforlunch!")
 }
 
-// TODO: Do this better.
+// TODO: Do this better?
 var locationHandlers = NewLocationHandlers()
+var dishHandlers = NewDishHandlers()
 
 // GetAllRoutes contains all routes
 func GetAllRoutes() []*Route {
@@ -44,6 +45,30 @@ func GetAllRoutes() []*Route {
 			Method:      "PUT",
 			Pattern:     "location",
 			HandlerFunc: locationHandlers.update,
+		},
+		&Route{
+			Name:        "DishesList",
+			Method:      "GET",
+			Pattern:     "dish",
+			HandlerFunc: dishHandlers.list,
+		},
+		&Route{
+			Name:        "DishesShow",
+			Method:      "GET",
+			Pattern:     "dish/{dishId}",
+			HandlerFunc: dishHandlers.show,
+		},
+		&Route{
+			Name:        "DishesCreate",
+			Method:      "POST",
+			Pattern:     "dish",
+			HandlerFunc: dishHandlers.create,
+		},
+		&Route{
+			Name:        "DishesPut",
+			Method:      "PUT",
+			Pattern:     "dish",
+			HandlerFunc: dishHandlers.update,
 		},
 	}
 }
