@@ -26,8 +26,8 @@ func (r *LocationRepository) getLocation(id int) (*Location, error) {
 }
 
 // createLocation create a Location object in the repository
-func (r *LocationRepository) createLocation(loc *Location) {
-	DB.NamedExec(`INSERT INTO location
+func (r *LocationRepository) createLocation(loc *Location) error {
+	_, err := DB.NamedExec(`INSERT INTO location
 		(
 			name
 		)
@@ -36,11 +36,13 @@ func (r *LocationRepository) createLocation(loc *Location) {
 			:name
 		);
 	`, loc)
+	return err
 }
 
 // updateLocation updates an existing Location
-func (r *LocationRepository) updateLocation(loc *Location) {
-	DB.NamedExec(`UPDATE location SET
+func (r *LocationRepository) updateLocation(loc *Location) error {
+	_, err := DB.NamedExec(`UPDATE location SET
 		name = :name
 	WHERE ID = :id;`, loc)
+	return err
 }

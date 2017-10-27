@@ -26,8 +26,8 @@ func (r *ReviewRepository) getReview(id int) (*Review, error) {
 }
 
 // createReview create a Review object in the repository
-func (r *ReviewRepository) createReview(review *Review) {
-	DB.NamedExec(`INSERT INTO review
+func (r *ReviewRepository) createReview(review *Review) error {
+	_, err := DB.NamedExec(`INSERT INTO review
 		(
 			user_id,
 			dish_id,
@@ -48,11 +48,12 @@ func (r *ReviewRepository) createReview(review *Review) {
 			NOW()
 		);
 	`, review)
+	return err
 }
 
 // updateReview updates an existing Review
-func (r *ReviewRepository) updateReview(review *Review) {
-	DB.NamedExec(`UPDATE Review SET
+func (r *ReviewRepository) updateReview(review *Review) error {
+	_, err := DB.NamedExec(`UPDATE Review SET
 		user_id = :user_id,
 		dish_id = :dish_id,
 		title = :title,
@@ -60,4 +61,5 @@ func (r *ReviewRepository) updateReview(review *Review) {
 		body = :body,
 		last_edited = NOW()
 	WHERE ID = :id;`, review)
+	return err
 }

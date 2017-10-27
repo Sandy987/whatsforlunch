@@ -25,8 +25,8 @@ func NewUserHandlers() *UserHandler {
 // show shows the details of a particular User
 func (u *UserHandler) show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, converr := strconv.Atoi(vars["userId"])
-	if converr != nil {
+	id, err := strconv.Atoi(vars["userId"])
+	if err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid ID")
 		return
 	}
@@ -72,7 +72,11 @@ func (u *UserHandler) signup(w http.ResponseWriter, r *http.Request) {
 
 	user.PasswordHash = base64.StdEncoding.EncodeToString(hash)
 
-	u.userRepo.createUser(&user)
+	if err = u.userRepo.createUser(&user); err != nil {
+		RespondWithError(w, http.StatusInternalServerError, "Unable to signup")
+		return
+	}
+
 	RespondWithJSON(w, http.StatusCreated, nil)
 }
 
@@ -85,6 +89,10 @@ func (u *UserHandler) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u.userRepo.updateUser(&user)
+	if err := u.userRepo.updateUser(&user); err != nil {
+		RespondWithError(w, http.StatusInternalServerError, "Unable to update user")
+		return
+	}
+
 	RespondWithJSON(w, http.StatusCreated, nil)
 }

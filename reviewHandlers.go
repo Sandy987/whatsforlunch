@@ -30,8 +30,8 @@ func (h *ReviewHandler) list(w http.ResponseWriter, r *http.Request) {
 // show shows the details of a particular Review
 func (h *ReviewHandler) show(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, converr := strconv.Atoi(vars["reviewId"])
-	if converr != nil {
+	id, err := strconv.Atoi(vars["reviewId"])
+	if err != nil {
 		RespondWithError(w, http.StatusBadRequest, "Invalid ID")
 		return
 	}
@@ -52,8 +52,11 @@ func (h *ReviewHandler) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, loc := range reviews {
-		h.reviewRepo.createReview(&loc)
+	for _, rev := range reviews {
+		if err := h.reviewRepo.createReview(&rev); err != nil {
+			RespondWithError(w, http.StatusInternalServerError, "Unable to create review")
+			return
+		}
 	}
 
 	RespondWithJSON(w, http.StatusCreated, len(reviews))
@@ -68,6 +71,9 @@ func (h *ReviewHandler) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.reviewRepo.updateReview(&review)
+	if err := h.reviewRepo.updateReview(&review); err != nil {
+		RespondWithError(w, http.StatusInternalServerError, "Unable to update review")
+		return
+	}
 	RespondWithJSON(w, http.StatusCreated, nil)
 }

@@ -53,7 +53,10 @@ func (h *DishHandler) create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, dish := range dishes {
-		h.dishRepo.createDish(&dish)
+		if err := h.dishRepo.createDish(&dish); err != nil {
+			RespondWithError(w, http.StatusInternalServerError, "Unable to create Dish")
+			return
+		}
 	}
 
 	RespondWithJSON(w, http.StatusCreated, len(dishes))
@@ -68,6 +71,9 @@ func (h *DishHandler) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.dishRepo.updateDish(&dish)
+	if err := h.dishRepo.updateDish(&dish); err != nil {
+		RespondWithError(w, http.StatusInternalServerError, "Unable to update dish")
+		return
+	}
 	RespondWithJSON(w, http.StatusCreated, nil)
 }
