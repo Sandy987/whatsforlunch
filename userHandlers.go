@@ -45,7 +45,32 @@ type LoginRequestModel struct {
 }
 
 func (u *UserHandler) login(w http.ResponseWriter, r *http.Request) {
+	var login LoginRequestModel
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&login); err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid Login")
+		return
+	}
 
+	hash, err := u.userRepo.getHashForUsername(login.Username)
+	if err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid Login")
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(hash), []byte(login.Password))
+	if err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid Login")
+		return
+	}
+
+	token, err := getSignedTokenForUser(login.Username)
+	if err != nil {
+		RespondWithError(w, http.StatusBadRequest, "Invalid Login")
+		return
+	}
+
+	RespondWithJSON(w, http.StatusOK, token)
 }
 
 // SignupRequestModel is a model used to create new users

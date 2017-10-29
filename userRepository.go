@@ -31,6 +31,14 @@ func (r *UserRepository) getUser(id int) (*User, error) {
 	return &user, err
 }
 
+func (r *UserRepository) getHashForUsername(username string) (string, error) {
+	var hash string
+	err := DB.Get(&hash, `SELECT
+		password_hash
+		from "user" WHERE username = $1;`, username)
+	return hash, err
+}
+
 // createUser create a User object in the repository
 func (r *UserRepository) createUser(u *HashedUser) error {
 	_, err := DB.NamedExec(`INSERT INTO "user" 
