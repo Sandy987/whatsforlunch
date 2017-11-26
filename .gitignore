@@ -24,6 +24,7 @@ debug
 
 # Environment variables
 .env
+.envrc
 
 # Govendor dependencies
 vendor/*/
